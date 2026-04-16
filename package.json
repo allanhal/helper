@@ -1,6 +1,6 @@
 {
   "name": "helper-electron",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "packageManager": "pnpm@10.33.0",
   "description": "macOS desktop app that captures audio, transcribes locally with Whisper, and uses Ollama for real-time Q&A detection. 100% private — no cloud, no API keys.",
   "author": "Allan Pinheiro <allan.hal@gmail.com>",
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@electron/rebuild": "^4.0.3",
     "@eslint/js": "^9.39.4",
+    "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/better-sqlite3": "^7.6.13",
