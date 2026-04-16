@@ -1,0 +1,51 @@
+name: Build Whisper for Windows
+
+# Manual trigger — run this when updating the whisper.cpp version
+# or when whisper-win/ binaries need to be refreshed.
+on:
+  workflow_dispatch:
+    inputs:
+      whisper_tag:
+        description: "whisper.cpp git tag (e.g. v1.7.5)"
+        required: true
+        default: "v1.7.5"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout whisper.cpp
+        uses: actions/checkout@v4
+        with:
+          repository: ggerganov/whisper.cpp
+          ref: ${{ github.event.inputs.whisper_tag }}
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: List outputs
+        run: |
+          dir build\bin\Release\
+          dir build\src\Release\
+          dir build\ggml\src\Release\
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          mkdir -p whisper-win
+          cp build/bin/Release/whisper-cli.exe whisper-win/
+          # Copy all DLLs from bin, src, and ggml directories
+          cp build/bin/Release/*.dll whisper-win/ 2>/dev/null || true
+          cp build/src/Release/*.dll whisper-win/ 2>/dev/null || true
+          cp build/ggml/src/Release/*.dll whisper-win/ 2>/dev/null || true
+          ls -la whisper-win/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: whisper-win-x64
+          path: whisper-win/
+          retention-days: 90
