@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 22
 
-      - uses: pnpm/action-setup@v4
+      - run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
@@ -43,7 +43,7 @@ jobs:
         with:
           node-version: 22
 
-      - uses: pnpm/action-setup@v4
+      - run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
