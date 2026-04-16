@@ -1,6 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('electronAPI', {
+  // Platform info (synchronous, no IPC needed)
+  platform: process.platform,
   // Audio
   getDesktopSourceId: () => ipcRenderer.invoke('get-desktop-source-id'),
   transcribe: (samples) => ipcRenderer.invoke('transcribe', samples),

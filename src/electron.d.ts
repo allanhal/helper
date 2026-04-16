@@ -103,6 +103,8 @@ declare global {
   }
 
   interface ElectronAPI {
+    // Platform
+    platform: string
     // Audio
     getDesktopSourceId: () => Promise<string | null>
     transcribe: (samples: Float32Array) => Promise<TranscribeResult[]>

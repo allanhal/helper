@@ -59,8 +59,8 @@ export const Toolbar = ({
     <div
       className="flex items-center px-4"
       style={{
-        // Reserve space for macOS traffic lights (hiddenInset titlebar)
-        paddingLeft: 80,
+        // Reserve space for macOS traffic lights; no extra padding on Windows/Linux
+        paddingLeft: window.electronAPI?.platform === 'darwin' ? 80 : 16,
         height: 44,
         WebkitAppRegion: 'drag',
       } as React.CSSProperties}

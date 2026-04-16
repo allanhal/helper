@@ -24,7 +24,11 @@ function App() {
     window.electronAPI.ensureDefaultModel().then((res) => {
       setFirstRunModel(res.model)
       setFirstRunNeeded(!res.present)
-    }).catch(() => setFirstRunNeeded(false))
+    }).catch(() => {
+      // IPC failed — show first-run download so the user sees the error
+      // and can retry instead of silently skipping to a broken main app
+      setFirstRunNeeded(true)
+    })
   }, [])
 
   if (firstRunNeeded === null) {

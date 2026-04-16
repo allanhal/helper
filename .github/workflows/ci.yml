@@ -31,7 +31,10 @@ jobs:
         run: pnpm tsc -p electron/tsconfig.json --noEmit
 
   build:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     needs: lint-and-typecheck
     steps:
       - uses: actions/checkout@v4

@@ -69,7 +69,7 @@ async function ensureOllama(): Promise<boolean> {
     ollamaProcess = spawn('ollama', ['serve'], {
       detached: false,
       stdio: 'ignore',
-      env: { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.env.TMPDIR },
+      env: { PATH: process.env.PATH, HOME: process.env.HOME || process.env.USERPROFILE, TMPDIR: process.env.TMPDIR || process.env.TEMP },
     })
     ollamaProcess.on('error', () => { ollamaProcess = null })
     return await waitForOllama()
@@ -128,7 +128,7 @@ async function ensureOllamaFast(): Promise<boolean> {
     ollamaFastProcess = spawn('ollama', ['serve'], {
       detached: false,
       stdio: 'ignore',
-      env: { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.env.TMPDIR, OLLAMA_HOST: `127.0.0.1:${OLLAMA_FAST_PORT}` },
+      env: { PATH: process.env.PATH, HOME: process.env.HOME || process.env.USERPROFILE, TMPDIR: process.env.TMPDIR || process.env.TEMP, OLLAMA_HOST: `127.0.0.1:${OLLAMA_FAST_PORT}` },
     })
     ollamaFastProcess.on('error', () => { ollamaFastProcess = null })
     ollamaFastProcess.on('exit', () => { ollamaFastProcess = null })
@@ -368,8 +368,11 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
     },
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 14, y: 14 },
+    // macOS: hide native title bar, keep traffic lights
+    // Windows/Linux: use default native frame
+    ...(process.platform === 'darwin'
+      ? { titleBarStyle: 'hiddenInset' as const, trafficLightPosition: { x: 14, y: 14 } }
+      : {}),
   })
 
   if (app.dock) {
