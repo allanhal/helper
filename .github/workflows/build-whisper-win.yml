@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout whisper.cpp
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ggerganov/whisper.cpp
           ref: ${{ github.event.inputs.whisper_tag }}
@@ -44,7 +44,7 @@ jobs:
           ls -la whisper-win/
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: whisper-win-x64
           path: whisper-win/
