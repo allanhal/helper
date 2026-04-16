@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - run: corepack enable
+
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-
-      - run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
@@ -39,11 +39,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - run: corepack enable
+
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-
-      - run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
