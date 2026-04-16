@@ -1,0 +1,142 @@
+appId: com.meetinghelper.app
+productName: Meeting Helper
+directories:
+  output: release
+  buildResources: build
+afterPack: build/afterPack.cjs
+publish:
+  provider: github
+  owner: allanhal
+  repo: helper
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - package.json
+  # Defensive: never ship any ggml model file — models are downloaded at runtime
+  # into app.getPath('userData')/whisper-models.
+  - "!**/ggml-*.bin"
+  - "!**/.env"
+  - "!**/.env.*"
+  # --- Global node_modules cleanup ---
+  # Strip docs, TS sources, sourcemaps, and test directories from all packages
+  - "!**/node_modules/**/*.md"
+  - "!**/node_modules/**/*.markdown"
+  - "!**/node_modules/**/*.ts"
+  - "!**/node_modules/**/*.map"
+  - "!**/node_modules/**/*.sh"
+  - "!**/node_modules/**/*.py"
+  - "!**/node_modules/**/*.c"
+  - "!**/node_modules/**/*.cpp"
+  - "!**/node_modules/**/*.cc"
+  - "!**/node_modules/**/*.cmake"
+  - "!**/node_modules/**/Makefile"
+  - "!**/node_modules/**/CMakeLists.txt"
+  - "!**/node_modules/**/LICENSE*"
+  - "!**/node_modules/**/LICENCE*"
+  - "!**/node_modules/**/CHANGELOG*"
+  - "!**/node_modules/**/HISTORY*"
+  - "!**/node_modules/**/AUTHORS*"
+  - "!**/node_modules/**/CONTRIBUTORS*"
+  - "!**/node_modules/**/.github/**"
+  - "!**/node_modules/**/.eslintrc*"
+  - "!**/node_modules/**/.prettierrc*"
+  - "!**/node_modules/**/tsconfig*.json"
+  - "!**/node_modules/**/test/**"
+  - "!**/node_modules/**/tests/**"
+  - "!**/node_modules/**/__tests__/**"
+  - "!**/node_modules/**/example/**"
+  - "!**/node_modules/**/examples/**"
+  - "!**/node_modules/**/docs/**"
+  - "!**/node_modules/**/doc/**"
+  # --- nodejs-whisper: keep compiled binary + JS wrapper only ---
+  # Source / build system (not needed at runtime)
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/src/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/cmake/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/include/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/examples/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/ggml/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/models/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/bindings/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/samples/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/scripts/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/grammars/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/ci/**"
+  # Build intermediates (object files, CMake state) — keep build/bin/whisper-cli + dylibs
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/CMakeFiles/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/examples/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/Testing/**"
+  # Strip CMake detritus from build/src and build/ggml but KEEP the .dylib runtime libs
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/src/CMakeFiles/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/src/cmake_install.cmake"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/src/Makefile"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/ggml/**/CMakeFiles/**"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/ggml/**/cmake_install.cmake"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/ggml/**/Makefile"
+  # Unneeded binaries inside build/bin — only whisper-cli is used at runtime
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/bench"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/quantize"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/test-vad"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/test-vad-full"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/vad-speech-segments"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/whisper-bench"
+  - "!node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/whisper-server"
+  # nodejs-whisper JS wrapper — we only import dist/constants.js at runtime
+  # (see electron/main.ts). Drop every other compiled JS + sourcemap + d.ts.
+  - "!node_modules/nodejs-whisper/dist/autoDownloadModel.*"
+  - "!node_modules/nodejs-whisper/dist/downloadModel.*"
+  - "!node_modules/nodejs-whisper/dist/index.*"
+  - "!node_modules/nodejs-whisper/dist/types.*"
+  - "!node_modules/nodejs-whisper/dist/utils.*"
+  - "!node_modules/nodejs-whisper/dist/whisper.*"
+  - "!node_modules/nodejs-whisper/dist/WhisperHelper.*"
+  - "!node_modules/nodejs-whisper/dist/constants.d.ts"
+  - "!node_modules/nodejs-whisper/dist/constants.js.map"
+  # nodejs-whisper install-time deps — not used at runtime (we spawn whisper-cli)
+  - "!node_modules/{readline-sync,shelljs,fast-glob}/**"
+  # fast-glob transitive chain (only required by the nodejs-whisper JS wrapper)
+  - "!node_modules/{glob,micromatch,braces,picomatch,fill-range,is-glob,is-extglob,is-number,to-regex-range,merge2,fastq,reusify,queue-microtask,run-parallel}/**"
+  - "!node_modules/@nodelib/**"
+  # --- better-sqlite3: keep compiled .node + lib only ---
+  - "!node_modules/better-sqlite3/src/**"
+  - "!node_modules/better-sqlite3/deps/**"
+  - "!node_modules/better-sqlite3/binding.gyp"
+# Unpack native .node binaries from asar so they can be dlopen'd at runtime
+asarUnpack:
+  - "node_modules/better-sqlite3/build/Release/*.node"
+# whisper.cpp binary + dylibs bundled as extraResources (outside asar entirely)
+extraResources:
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/whisper-cli"
+    to: "whisper/whisper-cli"
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/ggml-metal.metal"
+    to: "whisper/ggml-metal.metal"
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/ggml-common.h"
+    to: "whisper/ggml-common.h"
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/bin/ggml-metal-impl.h"
+    to: "whisper/ggml-metal-impl.h"
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/src/"
+    to: "whisper/"
+    filter: ["*.dylib"]
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/ggml/src/"
+    to: "whisper/ggml/"
+    filter: ["**/*.dylib"]
+  - from: "node_modules/nodejs-whisper/cpp/whisper.cpp/build/autogenerated/"
+    to: "whisper/"
+    filter: ["*.metal"]
+electronLanguages:
+  - en
+  - pt
+dmg:
+  format: ULFO
+mac:
+  target:
+    - target: dmg
+      arch: arm64
+  category: public.app-category.utilities
+  type: development
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    NSMicrophoneUsageDescription: "Meeting Helper listens to your microphone to transcribe speech."
+    NSScreenCaptureUsageDescription: "Meeting Helper captures system audio output to transcribe what plays on your speakers."
+    NSSystemAudioRecordingUsageDescription: "Meeting Helper records system audio to transcribe what plays on your speakers."
+compression: store

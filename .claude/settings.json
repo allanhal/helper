@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 60,
+            "statusMessage": "Checking TypeScript...",
+            "command": "FILE=$(jq -r '.tool_input.file_path // empty' 2>/dev/null); [[ \"$FILE\" =~ \\.(ts|tsx)$ ]] || exit 0; cd /Users/allanpinheiro/helper; if [[ \"$FILE\" == *\"/electron/\"* ]]; then OUT=$(pnpm tsc -p electron/tsconfig.json --noEmit 2>&1 | head -20); else OUT=$(pnpm tsc --noEmit 2>&1 | head -20); fi; [[ -z \"$OUT\" ]] && exit 0; jq -n --arg ctx \"TS errors after edit:\\n$OUT\" '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":$ctx}}'"
+          }
+        ]
+      }
+    ]
+  }
+}

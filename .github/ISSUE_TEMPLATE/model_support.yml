@@ -1,0 +1,37 @@
+name: Model Compatibility
+description: Report an issue with a specific Ollama model
+labels: ["model-compat"]
+body:
+  - type: input
+    id: model-name
+    attributes:
+      label: Model Name and Version
+      description: The exact Ollama model identifier.
+      placeholder: e.g. gemma4:e4b
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happens
+    attributes:
+      label: What Happens
+      description: Describe the behavior you observe with this model.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: terminal-output
+    attributes:
+      label: Terminal Output
+      description: Paste relevant logs from `pnpm dev`.
+      render: shell
+    validations:
+      required: false

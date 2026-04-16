@@ -1,0 +1,78 @@
+{
+  "name": "helper-electron",
+  "version": "1.0.17",
+  "description": "macOS desktop app that captures audio, transcribes locally with Whisper, and uses Ollama for real-time Q&A detection. 100% private — no cloud, no API keys.",
+  "author": "Allan Pinheiro <allan.hal@gmail.com>",
+  "license": "Apache-2.0",
+  "keywords": [
+    "electron",
+    "meeting",
+    "transcription",
+    "whisper",
+    "ollama",
+    "local-ai",
+    "privacy",
+    "macos"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allanhal/helper.git"
+  },
+  "homepage": "https://meetinghelper.vercel.app",
+  "bugs": {
+    "url": "https://github.com/allanhal/helper/issues"
+  },
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "build": "tsc -b && vite build && tsc -p electron/tsconfig.json && cp electron/preload.cjs dist-electron/preload.cjs",
+    "build:electron": "tsc -p electron/tsconfig.json && cp electron/preload.cjs dist-electron/preload.cjs",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "preview": "vite preview",
+    "dist": "node scripts/bump-version.mjs && pnpm run build && electron-builder --publish never",
+    "dist:fast": "pnpm run build && electron-builder --publish never --config.compression=store",
+    "release": "node scripts/release.mjs",
+    "postinstall": "electron-rebuild -f -w better-sqlite3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "nodejs-whisper": "^0.2.9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "electron"
+    ]
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.3",
+    "@eslint/js": "^9.39.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vercel/blob": "^2.3.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.27",
+    "electron": "^41.1.1",
+    "electron-builder": "^26.8.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.1",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vite": "^8.0.1",
+    "vitest": "^4.1.2"
+  }
+}

@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+dist-electron/
+
+# Electron-builder releases (DMGs, ZIPs, etc.)
+release/
+
+# Binary downloads (served via Vercel Blob, not git)
+*.dmg
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local overrides
+*.local
+
+# Transcription output
+transcriptions/
+
+# Screenshots / temp images
+*.jpg
+*.jpeg
+*.png
+!build/icon.png
+!public/**
+!landing/public/**
+
+# Claude Code
+.claude/scheduled_tasks.lock
+
+# Electron-builder debug
+builder-debug.yml
+builder-effective-config.yaml
