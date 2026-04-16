@@ -20,8 +20,8 @@ jobs:
           repository: ggerganov/whisper.cpp
           ref: ${{ github.event.inputs.whisper_tag }}
 
-      - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+      - name: Configure CMake (CPU-only, no GPU backends)
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_SYCL=OFF -DGGML_BLAS=OFF -DGGML_OPENMP=OFF -DWHISPER_SDL2=OFF
 
       - name: Build
         run: cmake --build build --config Release
