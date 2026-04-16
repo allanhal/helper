@@ -62,3 +62,5 @@ transcriptions/
 # Electron-builder debug
 builder-debug.yml
 builder-effective-config.yaml
+test-fixtures/
+log.txt

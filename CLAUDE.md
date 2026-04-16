@@ -175,8 +175,9 @@ source landing/.env.local && node scripts/upload-dmg.mjs "release/Meeting Helper
 
 ## Landing Page Rules
 
-- **Never reference the GitHub repo** — the repo is private. No links, mentions, or references to GitHub anywhere on the landing page (`landing/`). This includes URLs, "View on GitHub" buttons, "Open Source" badges, footer links, and alt text.
-- Download links should point to the download section (`#download`) or a direct file URL (e.g. Vercel Blob), never to GitHub Releases.
+- Repo is public (Apache 2.0). GitHub links are allowed.
+- Mac DMG download: direct Vercel Blob URL (updated automatically by release script).
+- Windows installer download: link to GitHub Releases latest (`https://github.com/allanhal/helper/releases/latest`) since `.exe` artifacts live there.
 
 <!-- TODO: When the repo goes public, revisit these rules — the landing page should then link to the GitHub repo and may reference open source status. Until then, keep the rules above strictly enforced. -->
 

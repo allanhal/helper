@@ -27,6 +27,7 @@
   "type": "module",
   "scripts": {
     "dev": "node dev-server.js",
+    "test:whisper-win": "node scripts/test-whisper-win.mjs",
     "build": "tsc -b && vite build && tsc -p electron/tsconfig.json && cp electron/preload.cjs dist-electron/preload.cjs",
     "build:electron": "tsc -p electron/tsconfig.json && cp electron/preload.cjs dist-electron/preload.cjs",
     "lint": "eslint .",

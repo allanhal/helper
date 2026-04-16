@@ -6,11 +6,13 @@ import { useState } from "react";
 const t = {
   en: {
     nav_download: "Download",
-    hero_badge: "v1.0.17 — FREE",
+    nav_github: "GitHub",
+    hero_badge: "v1.0.29 — FREE",
     hero_title_1: "Your meetings, understood by AI.",
     hero_title_2: "Locally.",
-    hero_sub: "Real-time transcription and AI analysis running entirely on your Mac. No cloud. No subscriptions. Your conversations stay yours.",
+    hero_sub: "Real-time transcription and AI analysis running entirely on your computer. No cloud. No subscriptions. Your conversations stay yours.",
     download_mac: "Download for macOS",
+    download_win: "Download for Windows",
 
     features_title: "Why Meeting Helper?",
     f1_title: "Real-time Transcription",
@@ -40,9 +42,9 @@ const t = {
     step5_title: "5. Start recording",
     step5_desc: "Select your audio source (mic or system audio), hit Record, and let AI do the rest.",
     download_title: "Download Meeting Helper",
-    download_sub: "Free and private. macOS only.",
+    download_sub: "Free and private. macOS and Windows.",
     req_title: "Requirements",
-    req_macos: "macOS 12+",
+    req_macos: "macOS 12+ / Windows 10+",
     req_ram: "8 GB+ RAM",
     req_ollama: "Ollama installed",
     footer_built: "Made free by",
@@ -52,11 +54,13 @@ const t = {
   },
   pt: {
     nav_download: "Baixar",
-    hero_badge: "v1.0.17 — GRATUITO",
+    nav_github: "GitHub",
+    hero_badge: "v1.0.29 — GRATUITO",
     hero_title_1: "Suas reuniões, entendidas por IA.",
     hero_title_2: "Localmente.",
-    hero_sub: "Transcrição em tempo real e análise por IA rodando inteiramente no seu Mac. Sem nuvem. Sem assinaturas. Suas conversas permanecem suas.",
+    hero_sub: "Transcrição em tempo real e análise por IA rodando inteiramente no seu computador. Sem nuvem. Sem assinaturas. Suas conversas permanecem suas.",
     download_mac: "Baixar para macOS",
+    download_win: "Baixar para Windows",
 
     features_title: "Por que o Meeting Helper?",
     f1_title: "Transcrição em Tempo Real",
@@ -86,9 +90,9 @@ const t = {
     step5_title: "5. Comece a gravar",
     step5_desc: "Selecione a fonte de áudio (microfone ou áudio do sistema), clique em Gravar e deixe a IA fazer o resto.",
     download_title: "Baixar o Meeting Helper",
-    download_sub: "Gratuito e privado. Apenas macOS.",
+    download_sub: "Gratuito e privado. macOS e Windows.",
     req_title: "Requisitos",
-    req_macos: "macOS 12+",
+    req_macos: "macOS 12+ / Windows 10+",
     req_ram: "8 GB+ de RAM",
     req_ollama: "Ollama instalado",
     footer_built: "Feito de graça por",
@@ -101,11 +105,29 @@ const t = {
 type Lang = keyof typeof t;
 
 const DOWNLOAD_URL = "/download/Meeting%20Helper-1.0.17-arm64.dmg";
+const WINDOWS_URL = "https://github.com/allanhal/helper/releases/latest";
+const REPO_URL = "https://github.com/allanhal/helper";
 
 function AppleIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+    </svg>
+  );
+}
+
+function WindowsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M0 3.449L9.75 2.1v9.451H0zm11.0 9.451H24V0L11.0 1.85zm-11.0 1.101H9.75V24L0 22.1zm11.0 0H24V24L11.0 22.799z" />
+    </svg>
+  );
+}
+
+function GitHubIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
     </svg>
   );
 }
@@ -138,7 +160,17 @@ export default function Home() {
             >
               {lang === "en" ? "🇧🇷 PT" : "🇺🇸 EN"}
             </button>
-            <a href={DOWNLOAD_URL} className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-black hover:bg-accent-hover">
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-white hover:border-white/20"
+              aria-label={s.nav_github}
+            >
+              <GitHubIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{s.nav_github}</span>
+            </a>
+            <a href="#download" className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-black hover:bg-accent-hover">
               {s.nav_download}
             </a>
           </div>
@@ -163,7 +195,10 @@ export default function Home() {
               <AppleIcon className="h-5 w-5" />
               {s.download_mac}
             </a>
-            
+            <a href={WINDOWS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-base font-semibold text-white hover:bg-white/10 hover:border-white/20">
+              <WindowsIcon className="h-5 w-5" />
+              {s.download_win}
+            </a>
           </div>
 
           <Image src="/screenshot.jpg" alt="Helper app" width={1920} height={1080} className="mx-auto mt-14 w-full max-w-4xl rounded-xl" priority />
@@ -247,10 +282,14 @@ export default function Home() {
             <div className="glass-card rounded-2xl p-5">
               <h3 className="font-semibold text-accent">{s.step3_title}</h3>
               <p className="mt-2 text-sm text-zinc-400">{s.step3_desc}</p>
-              <div className="mt-3">
+              <div className="mt-3 flex flex-wrap gap-3">
                 <a href={DOWNLOAD_URL} className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-black hover:bg-accent-hover">
                   <AppleIcon className="h-4 w-4" />
                   {s.download_mac}
+                </a>
+                <a href={WINDOWS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10 hover:border-white/20">
+                  <WindowsIcon className="h-4 w-4" />
+                  {s.download_win}
                 </a>
               </div>
             </div>
@@ -284,10 +323,14 @@ export default function Home() {
         <div className="mx-auto max-w-5xl px-6 text-center">
           <h2 className="text-2xl font-bold text-white sm:text-3xl">{s.download_title}</h2>
           <p className="mt-3 text-zinc-400">{s.download_sub}</p>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a href={DOWNLOAD_URL} className="inline-flex items-center gap-2 rounded-full bg-accent px-8 sm:px-10 py-4 text-base sm:text-lg font-semibold text-black hover:bg-accent-hover hover:shadow-[0_0_32px_rgba(34,197,94,0.3)]">
               <AppleIcon className="h-6 w-6" />
               {s.download_mac}
+            </a>
+            <a href={WINDOWS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 sm:px-10 py-4 text-base sm:text-lg font-semibold text-white hover:bg-white/10 hover:border-white/20">
+              <WindowsIcon className="h-6 w-6" />
+              {s.download_win}
             </a>
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500">
@@ -298,7 +341,7 @@ export default function Home() {
             <span>{s.req_ollama}</span>
           </div>
           <div className="mt-4">
-            <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-zinc-400">v1.0.17</span>
+            <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-zinc-400">v1.0.29</span>
           </div>
         </div>
       </section>
