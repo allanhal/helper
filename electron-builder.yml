@@ -156,9 +156,16 @@ win:
   artifactName: "Meeting Helper-${version}-win-x64.${ext}"
   # whisper-cli.exe + DLLs built by .github/workflows/build-whisper-win.yml
   extraResources:
-    - from: "whisper-win/"
-      to: "whisper/"
-      filter: ["whisper-cli.exe", "*.dll"]
+    - from: "whisper-win/whisper-cli.exe"
+      to: "whisper/whisper-cli.exe"
+    - from: "whisper-win/whisper.dll"
+      to: "whisper/whisper.dll"
+    - from: "whisper-win/ggml.dll"
+      to: "whisper/ggml.dll"
+    - from: "whisper-win/ggml-base.dll"
+      to: "whisper/ggml-base.dll"
+    - from: "whisper-win/ggml-cpu.dll"
+      to: "whisper/ggml-cpu.dll"
 nsis:
   oneClick: true
   perMachine: false
