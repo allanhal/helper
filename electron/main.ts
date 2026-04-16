@@ -80,6 +80,7 @@ async function ensureOllama(): Promise<boolean> {
 
 // Kill whatever process is listening on OLLAMA_FAST_PORT (handles both
 // self-spawned and externally-started instances).
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function stopOllamaFast(): Promise<void> {
   if (ollamaFastProcess) {
     ollamaFastProcess.kill()
@@ -87,22 +88,40 @@ async function stopOllamaFast(): Promise<void> {
   }
   // Kill the process listening on the port (server only, not clients)
   await new Promise<void>(resolve => {
-    execFile('lsof', ['-ti', `tcp:${OLLAMA_FAST_PORT}`, '-sTCP:LISTEN'], (err, stdout) => {
-      if (err || !stdout.trim()) return resolve()
-      const pids = stdout.trim().split('\n').filter(Boolean)
-      for (const pid of pids) {
-        const n = parseInt(pid, 10)
-        if (!isNaN(n) && n !== process.pid) {
-          try { process.kill(n, 'SIGTERM') } catch {}
+    if (process.platform === 'win32') {
+      // Windows: use netstat to find PID listening on the port
+      execFile('cmd', ['/c', `netstat -ano | findstr LISTENING | findstr :${OLLAMA_FAST_PORT}`], (err, stdout) => {
+        if (err || !stdout.trim()) return resolve()
+        // netstat lines: "  TCP    0.0.0.0:PORT    0.0.0.0:0    LISTENING    PID"
+        for (const line of stdout.trim().split('\n')) {
+          const parts = line.trim().split(/\s+/)
+          const pid = parseInt(parts[parts.length - 1], 10)
+          if (!isNaN(pid) && pid !== process.pid) {
+            try { process.kill(pid, 'SIGTERM') } catch { /* port may already be free */ }
+          }
         }
-      }
-      setTimeout(resolve, 600)
-    })
+        setTimeout(resolve, 600)
+      })
+    } else {
+      // macOS/Linux: use lsof to find PID listening on the port
+      execFile('lsof', ['-ti', `tcp:${OLLAMA_FAST_PORT}`, '-sTCP:LISTEN'], (err, stdout) => {
+        if (err || !stdout.trim()) return resolve()
+        const pids = stdout.trim().split('\n').filter(Boolean)
+        for (const pid of pids) {
+          const n = parseInt(pid, 10)
+          if (!isNaN(n) && n !== process.pid) {
+            try { process.kill(n, 'SIGTERM') } catch { /* port may already be free */ }
+          }
+        }
+        setTimeout(resolve, 600)
+      })
+    }
   })
 }
 
 // Starts a second Ollama instance on OLLAMA_FAST_PORT for the fast tier.
 // No-op if already running. Returns true when ready.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function ensureOllamaFast(): Promise<boolean> {
   if (await checkOllamaFastRunning()) return true
   try {
@@ -120,6 +139,7 @@ async function ensureOllamaFast(): Promise<boolean> {
 }
 
 // Warm up the fast model on the fast instance so it's loaded in GPU memory.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function warmupFastModel(model: string): Promise<void> {
   return new Promise((resolve) => {
     const body = JSON.stringify({ model, messages: [{ role: 'user', content: 'hi' }], stream: false })
@@ -651,11 +671,14 @@ app.whenReady().then(async () => {
   createWindow()
 
   // Request mic permission AFTER window exists so the dialog appears on top
-  try {
-    const granted = await systemPreferences.askForMediaAccess('microphone')
-    logger.info('Microphone permission', { granted })
-  } catch (e) {
-    logger.error('Microphone access denied', e)
+  // askForMediaAccess is macOS-only; Windows/Linux grant via OS-level prompts
+  if (process.platform === 'darwin') {
+    try {
+      const granted = await systemPreferences.askForMediaAccess('microphone')
+      logger.info('Microphone permission', { granted })
+    } catch (e) {
+      logger.error('Microphone access denied', e)
+    }
   }
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -691,7 +714,11 @@ ipcMain.handle('get-log-path', () => logger.getLogPath())
 // ---------------------------------------------------------------------------
 
 ipcMain.handle('open-screen-recording-settings', () => {
-  shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture')
+  if (process.platform === 'darwin') {
+    shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture')
+  } else if (process.platform === 'win32') {
+    shell.openExternal('ms-settings:privacy-broadfilesystemaccess')
+  }
 })
 
 ipcMain.handle('get-system-stats', () => getSystemStats())
@@ -819,9 +846,14 @@ ipcMain.handle(IPC_GET_DESKTOP_SOURCE_ID, async () => {
 })
 
 ipcMain.handle('get-permission-status', () => {
-  const mic = systemPreferences.getMediaAccessStatus('microphone')
-  const screen = systemPreferences.getMediaAccessStatus('screen')
-  return { mic, screen }
+  if (process.platform === 'darwin') {
+    const mic = systemPreferences.getMediaAccessStatus('microphone')
+    const screen = systemPreferences.getMediaAccessStatus('screen')
+    return { mic, screen }
+  }
+  // Windows/Linux: no programmatic permission check — assume granted
+  // (OS handles permissions via runtime prompts)
+  return { mic: 'granted', screen: 'granted' }
 })
 
 // ---------------------------------------------------------------------------

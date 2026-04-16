@@ -112,6 +112,33 @@ SQLite via `better-sqlite3`. All writes go through `upsertSession` in `electron/
 
 ---
 
+## Versioning (SemVer)
+
+This project follows [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`.
+
+| Level | When to use | Examples |
+|-------|-------------|---------|
+| **PATCH** (`X.X.+1`) | Bug fixes, typos, dependency bumps, build fixes, config tweaks | Fix crash on empty transcript, update Tailwind, fix DMG packaging |
+| **MINOR** (`X.+1.0`) | New features, new UI panels, new model support — backward-compatible | Add action-items detection, add Portuguese UI, support new Ollama model |
+| **MAJOR** (`+1.0.0`) | Breaking changes that require user action or data migration | DB schema migration, config format change, drop macOS 13 support |
+
+### Agent Rules for Version Bumps
+
+- **Default to PATCH** for any fix, refactor, or build improvement.
+- **Use MINOR** only when adding user-visible functionality.
+- **Use MAJOR** only when existing users would need to take action (re-import data, update config, etc.).
+- When in doubt, ask. Over-bumping minor/major is worse than under-bumping.
+- The bump happens via `scripts/bump-version.mjs`:
+  ```bash
+  node scripts/bump-version.mjs              # patch (default)
+  node scripts/bump-version.mjs --minor      # new feature
+  node scripts/bump-version.mjs --major      # breaking change
+  ```
+- `pnpm dist` calls bump-version automatically (defaults to patch).
+- To override for a release: edit the `dist` script or call bump-version manually before `pnpm build`.
+
+---
+
 ## Release & Distribution
 
 ### One-Command Release
