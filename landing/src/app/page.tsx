@@ -104,7 +104,7 @@ const t = {
 
 type Lang = keyof typeof t;
 
-const DOWNLOAD_URL = "/download/Meeting%20Helper-1.0.30-arm64.dmg";
+const DOWNLOAD_URL = "https://github.com/allanhal/helper/releases/download/v1.0.30/Meeting.Helper-1.0.30-arm64.dmg";
 const WINDOWS_URL = "https://github.com/allanhal/helper/releases/download/v1.0.30/Meeting.Helper-1.0.30-win-x64.exe";
 const REPO_URL = "https://github.com/allanhal/helper";
 
