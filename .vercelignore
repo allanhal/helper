@@ -1,0 +1,5 @@
+# Only deploy landing/ — everything else is excluded
+/*
+!landing
+landing/.next
+landing/node_modules

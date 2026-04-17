@@ -7,12 +7,12 @@ const t = {
   en: {
     nav_download: "Download",
     nav_github: "GitHub",
-    hero_badge: "v1.0.29 — FREE",
+    hero_badge: "v1.0.30 — FREE",
     hero_title_1: "Your meetings, understood by AI.",
     hero_title_2: "Locally.",
     hero_sub: "Real-time transcription and AI analysis running entirely on your computer. No cloud. No subscriptions. Your conversations stay yours.",
     download_mac: "Download for macOS",
-    download_win: "Download for Windows",
+    download_win: "Download for Windows (pre-alpha)",
 
     features_title: "Why Meeting Helper?",
     f1_title: "Real-time Transcription",
@@ -42,7 +42,7 @@ const t = {
     step5_title: "5. Start recording",
     step5_desc: "Select your audio source (mic or system audio), hit Record, and let AI do the rest.",
     download_title: "Download Meeting Helper",
-    download_sub: "Free and private. macOS and Windows.",
+    download_sub: "Free and private. macOS and Windows (pre-alpha).",
     req_title: "Requirements",
     req_macos: "macOS 12+ / Windows 10+",
     req_ram: "8 GB+ RAM",
@@ -55,12 +55,12 @@ const t = {
   pt: {
     nav_download: "Baixar",
     nav_github: "GitHub",
-    hero_badge: "v1.0.29 — GRATUITO",
+    hero_badge: "v1.0.30 — GRATUITO",
     hero_title_1: "Suas reuniões, entendidas por IA.",
     hero_title_2: "Localmente.",
     hero_sub: "Transcrição em tempo real e análise por IA rodando inteiramente no seu computador. Sem nuvem. Sem assinaturas. Suas conversas permanecem suas.",
     download_mac: "Baixar para macOS",
-    download_win: "Baixar para Windows",
+    download_win: "Baixar para Windows (pré-alpha)",
 
     features_title: "Por que o Meeting Helper?",
     f1_title: "Transcrição em Tempo Real",
@@ -90,7 +90,7 @@ const t = {
     step5_title: "5. Comece a gravar",
     step5_desc: "Selecione a fonte de áudio (microfone ou áudio do sistema), clique em Gravar e deixe a IA fazer o resto.",
     download_title: "Baixar o Meeting Helper",
-    download_sub: "Gratuito e privado. macOS e Windows.",
+    download_sub: "Gratuito e privado. macOS e Windows (pré-alpha).",
     req_title: "Requisitos",
     req_macos: "macOS 12+ / Windows 10+",
     req_ram: "8 GB+ de RAM",
@@ -104,7 +104,7 @@ const t = {
 
 type Lang = keyof typeof t;
 
-const DOWNLOAD_URL = "/download/Meeting%20Helper-1.0.17-arm64.dmg";
+const DOWNLOAD_URL = "/download/Meeting%20Helper-1.0.30-arm64.dmg";
 const WINDOWS_URL = "https://github.com/allanhal/helper/releases/latest";
 const REPO_URL = "https://github.com/allanhal/helper";
 
@@ -341,7 +341,7 @@ export default function Home() {
             <span>{s.req_ollama}</span>
           </div>
           <div className="mt-4">
-            <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-zinc-400">v1.0.29</span>
+            <span className="inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-zinc-400">v1.0.30</span>
           </div>
         </div>
       </section>
