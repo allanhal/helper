@@ -103,6 +103,11 @@ page = page.replace(/hero_badge: "v[\d.]+ — FREE"/, `hero_badge: "v${version} 
 page = page.replace(/hero_badge: "v[\d.]+ — GRATUITO"/, `hero_badge: "v${version} — GRATUITO"`);
 // Update bottom version tag
 page = page.replace(/v[\d.]+<\/span>/, `v${version}</span>`);
+// Update WINDOWS_URL to point to the exe asset of the current tag
+page = page.replace(
+  /const WINDOWS_URL = "https:\/\/github\.com\/allanhal\/helper\/releases\/download\/v[\d.]+\/Meeting\.Helper-[\d.]+-win-x64\.exe";/,
+  `const WINDOWS_URL = "https://github.com/allanhal/helper/releases/download/v${version}/Meeting.Helper-${version}-win-x64.exe";`
+);
 const { writeFileSync } = await import("fs");
 writeFileSync(pagePath, page, "utf8");
 console.log(`Updated landing page to v${version}`);
